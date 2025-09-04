@@ -130,6 +130,8 @@ const NotificationsPage: React.FC<NotificationsPageProps> = () => {
     setNotifications(prev => 
       prev.map(notification => ({ ...notification, read: true }))
     );
+    // Communicate with header to update notification counter
+    window.dispatchEvent(new CustomEvent('notificationsRead'));
   };
 
   const deleteNotification = (id: string) => {
@@ -173,7 +175,7 @@ const NotificationsPage: React.FC<NotificationsPageProps> = () => {
             className="flex items-center space-x-2 px-4 py-2 bg-[#3bc9f4] hover:bg-[#2ea3d4] text-white rounded-lg transition-colors"
           >
             <Check className="w-4 h-4" />
-            <span>Mark All Read</span>
+<span>Read All Notifications</span>
           </button>
           
           <button

@@ -8,7 +8,8 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
   const [tradingMode, setTradingMode] = useState<'live' | 'paper'>('paper');
-  const [notifications] = useState(3);
+  const [notifications, setNotifications] = useState(3);
+  const [hasUnreadNotifications, setHasUnreadNotifications] = useState(true);
 
   const handleModeChange = (mode: 'live' | 'paper') => {
     setTradingMode(mode);
@@ -37,11 +38,16 @@ const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
 
           <div className="flex items-center space-x-4">
             <button 
-              onClick={() => onNavigate?.('notifications')}
+              onClick={() => {
+                onNavigate?.('notifications');
+                // Mark notifications as read when clicked
+                setHasUnreadNotifications(false);
+                setNotifications(0);
+              }}
               className="relative p-2 text-gray-400 hover:text-white transition-colors"
             >
               <Bell className="w-5 h-5" />
-              {notifications > 0 && (
+              {hasUnreadNotifications && notifications > 0 && (
                 <span className="absolute -top-1 -right-1 bg-[#e74c3c] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {notifications}
                 </span>

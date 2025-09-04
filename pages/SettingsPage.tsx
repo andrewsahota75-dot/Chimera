@@ -14,7 +14,7 @@ import CurrencyConverter from '../components/CurrencyConverter';
 interface SettingsPageProps {}
 
 const SettingsPage: React.FC<SettingsPageProps> = () => {
-  const [activeTab, setActiveTab] = useState('trading');
+  const [activeTab, setActiveTab] = useState('api');
   const [settings, setSettings] = useState({
     trading: {
       defaultQuantity: 100,
@@ -50,9 +50,6 @@ const SettingsPage: React.FC<SettingsPageProps> = () => {
   });
 
   const tabs = [
-    { id: 'trading', label: 'Trading', icon: DollarSign },
-    { id: 'display', label: 'Display', icon: Monitor },
-    { id: 'account', label: 'Account', icon: Shield },
     { id: 'api', label: 'API Keys', icon: Settings }
   ];
 
@@ -387,10 +384,30 @@ const SettingsPage: React.FC<SettingsPageProps> = () => {
 
   const renderApiSettings = () => (
     <div className="space-y-6">
+      {/* API Key Purpose Clarification */}
+      <div className="bg-[#1c1f26] border border-gray-600 rounded-lg p-4 mb-6">
+        <h4 className="text-white font-medium mb-3">API Key Purposes</h4>
+        <div className="space-y-3 text-sm">
+          <div className="flex justify-between items-center">
+            <span className="text-gray-300">Zerodha API</span>
+            <span className="text-gray-400">Equity trading and market data</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-300">Binance API</span>
+            <span className="text-gray-400">Cryptocurrency trading</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-300">Telegram Bot</span>
+            <span className="text-gray-400">Trade alerts and notifications</span>
+          </div>
+        </div>
+      </div>
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Zerodha API Key
+            <span className="text-xs text-gray-500 block">For equity trading and market data</span>
           </label>
           <input
             type="password"
@@ -417,6 +434,7 @@ const SettingsPage: React.FC<SettingsPageProps> = () => {
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Binance API Key
+            <span className="text-xs text-gray-500 block">For cryptocurrency trading</span>
           </label>
           <input
             type="password"
@@ -443,6 +461,7 @@ const SettingsPage: React.FC<SettingsPageProps> = () => {
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Telegram Bot Token
+            <span className="text-xs text-gray-500 block">For alerts and notifications</span>
           </label>
           <input
             type="password"
@@ -450,19 +469,6 @@ const SettingsPage: React.FC<SettingsPageProps> = () => {
             onChange={(e) => updateSetting('api', 'telegramToken', e.target.value)}
             className="w-full bg-[#1c1f26] border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-[#3bc9f4] focus:outline-none"
             placeholder="Enter Telegram bot token"
-          />
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Alpha Vantage API Key
-          </label>
-          <input
-            type="password"
-            value={settings.api.alphaVantageKey}
-            onChange={(e) => updateSetting('api', 'alphaVantageKey', e.target.value)}
-            className="w-full bg-[#1c1f26] border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-[#3bc9f4] focus:outline-none"
-            placeholder="Enter Alpha Vantage API key"
           />
         </div>
       </div>
@@ -486,16 +492,10 @@ const SettingsPage: React.FC<SettingsPageProps> = () => {
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'trading':
-        return renderTradingSettings();
-      case 'display':
-        return renderDisplaySettings();
-      case 'account':
-        return renderAccountSettings();
       case 'api':
         return renderApiSettings();
       default:
-        return renderTradingSettings();
+        return renderApiSettings();
     }
   };
 
@@ -553,12 +553,7 @@ const SettingsPage: React.FC<SettingsPageProps> = () => {
         {renderContent()}
       </div>
       
-      {/* Currency Converter Tool */}
-      {activeTab === 'display' && (
-        <div className="mt-6">
-          <CurrencyConverter />
-        </div>
-      )}
+      {/* Currency Converter Tool removed with Display tab */}
     </div>
   );
 };

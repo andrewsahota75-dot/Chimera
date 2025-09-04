@@ -11,9 +11,9 @@ import {
   ChevronRight,
   Activity,
   PieChart,
-  TestTube,
   Bell,
-  User
+  User,
+  AlertTriangle
 } from 'lucide-react';
 import { BotStatus } from '../types';
 
@@ -45,22 +45,16 @@ const navSections: NavSection[] = [
     ]
   },
   {
-    title: 'Research',
+    title: 'Trading',
     items: [
-      { id: 'backtesting', label: 'Backtesting', icon: TestTube },
       { id: 'strategies', label: 'Strategies', icon: Target }
-    ]
-  },
-  {
-    title: 'Execution',
-    items: [
-      { id: 'logs', label: 'Logs', icon: FileText },
-      { id: 'settings', label: 'Settings', icon: Settings }
     ]
   },
   {
     title: 'System',
     items: [
+      { id: 'logs', label: 'Logs', icon: FileText },
+      { id: 'settings', label: 'Settings', icon: Settings },
       { id: 'notifications', label: 'Notifications', icon: Bell, badge: '3' },
       { id: 'accounts', label: 'Accounts', icon: User }
     ]
@@ -69,8 +63,8 @@ const navSections: NavSection[] = [
 
 export default function Sidebar({ activePage, onNavigate, botStore }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['Core', 'Research', 'Execution', 'System']));
-  const [selectedBot, setSelectedBot] = useState<string>(botStore.bots[0]?.name || '');
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['Core', 'Trading', 'System']));
+  const [killSwitchActive, setKillSwitchActive] = useState(false);
 
   const toggleSection = (sectionTitle: string) => {
     const newExpanded = new Set(expandedSections);
@@ -82,8 +76,30 @@ export default function Sidebar({ activePage, onNavigate, botStore }: SidebarPro
     setExpandedSections(newExpanded);
   };
 
-  const { bots } = botStore;
-  const currentBotStatus = bots.find((bot: BotStatus) => bot.name === selectedBot);
+  const { bots, portfolioStats } = botStore;
+  const isSystemOnline = bots.some((bot: BotStatus) => bot.status === 'running');
+  
+  const handleKillSwitch = () => {
+    if (killSwitchActive) return;
+    
+    setKillSwitchActive(true);
+    // In a real app, this would trigger backend API calls to:
+    // 1. Close all positions
+    // 2. Stop all strategies
+    // 3. Prevent new position entries
+    console.log('KILL SWITCH ACTIVATED: Closing all positions and stopping strategies');
+    
+    // Reset kill switch after 5 seconds for demo
+    setTimeout(() => setKillSwitchActive(false), 5000);
+  };
+  
+  // Auto-trigger kill switch if portfolio drops 10% in a day
+  React.useEffect(() => {
+    if (portfolioStats?.dayChangePercent && portfolioStats.dayChangePercent <= -10) {
+      console.log('Auto-triggering kill switch due to 10% portfolio drop');
+      handleKillSwitch();
+    }
+  }, [portfolioStats?.dayChangePercent]);
 
   return (
     <div className={`bg-[#1c1f26] h-full transition-all duration-300 flex flex-col ${isCollapsed ? 'w-16' : 'w-64'}`}>
@@ -109,32 +125,38 @@ export default function Sidebar({ activePage, onNavigate, botStore }: SidebarPro
         </div>
       </div>
 
-      {/* Bot Status */}
+      {/* Trading Status */}
       {!isCollapsed && (
         <div className="p-4 border-b border-gray-700/50">
           <div className="space-y-3">
             <div>
-              <label className="text-xs text-gray-400 uppercase tracking-wide">Active Bot</label>
-              <select
-                value={selectedBot}
-                onChange={(e) => setSelectedBot(e.target.value)}
-                className="w-full bg-[#0e1117] text-white p-2 rounded-lg border border-gray-600 focus:border-[#3bc9f4] focus:outline-none mt-1 text-sm"
-              >
-                {bots.map((bot: BotStatus) => (
-                  <option key={bot.name} value={bot.name}>{bot.name}</option>
-                ))}
-              </select>
-            </div>
-            
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-gray-400">Status</span>
-              <div className="flex items-center space-x-2">
-                <div className={`w-2 h-2 rounded-full ${
-                  currentBotStatus?.status === 'RUNNING' ? 'bg-[#2ecc71]' : 'bg-[#e74c3c]'
-                }`} />
-                <span className="text-xs font-medium text-white">
-                  {currentBotStatus?.status || 'OFFLINE'}
-                </span>
+              <label className="text-xs text-gray-400 uppercase tracking-wide">Trading Status</label>
+              <div className="mt-2 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-white">Equity</span>
+                  <div className="flex items-center space-x-2">
+                    <div className={`w-2 h-2 rounded-full ${
+                      bots.filter(bot => bot.name.includes('Equity')).some(bot => bot.status === 'running') 
+                        ? 'bg-[#2ecc71]' : 'bg-[#e74c3c]'
+                    }`} />
+                    <span className="text-xs font-medium text-white">
+                      {bots.filter(bot => bot.name.includes('Equity')).some(bot => bot.status === 'running') ? 'Active' : 'Stopped'}
+                    </span>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-white">Crypto</span>
+                  <div className="flex items-center space-x-2">
+                    <div className={`w-2 h-2 rounded-full ${
+                      bots.filter(bot => bot.name.includes('Crypto')).some(bot => bot.status === 'running') 
+                        ? 'bg-[#2ecc71]' : 'bg-[#e74c3c]'
+                    }`} />
+                    <span className="text-xs font-medium text-white">
+                      {bots.filter(bot => bot.name.includes('Crypto')).some(bot => bot.status === 'running') ? 'Active' : 'Stopped'}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -196,11 +218,33 @@ export default function Sidebar({ activePage, onNavigate, botStore }: SidebarPro
 
       {/* Footer */}
       {!isCollapsed && (
-        <div className="p-4 border-t border-gray-700/50">
+        <div className="p-4 border-t border-gray-700/50 space-y-3">
           <div className="flex items-center space-x-2">
-            <Activity className="w-4 h-4 text-[#2ecc71]" />
-            <span className="text-xs text-gray-400">System Online</span>
+            <Activity className={`w-4 h-4 ${isSystemOnline ? 'text-[#2ecc71]' : 'text-[#e74c3c]'}`} />
+            <span className="text-xs text-gray-400">
+              System {isSystemOnline ? 'Online' : 'Offline'}
+            </span>
           </div>
+          
+          {/* Kill Switch */}
+          <button
+            onClick={handleKillSwitch}
+            disabled={killSwitchActive}
+            className={`w-full flex items-center justify-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+              killSwitchActive
+                ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                : 'bg-[#e74c3c] hover:bg-[#c0392b] text-white'
+            }`}
+          >
+            <AlertTriangle className="w-4 h-4" />
+            <span className="text-xs font-medium">
+              {killSwitchActive ? 'ACTIVATED' : 'KILL SWITCH'}
+            </span>
+          </button>
+          
+          <p className="text-xs text-gray-500 text-center">
+            Exits all positions & stops strategies
+          </p>
         </div>
       )}
     </div>

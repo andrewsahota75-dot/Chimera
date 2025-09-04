@@ -15,7 +15,7 @@ import PositionsTable from './components/PositionsTable';
 import BotsStatusPanel from './components/BotsStatusPanel';
 import AnalyticsPage from './apps/terminal-ui/src/pages/AnalyticsPage';
 import StrategiesPage from './apps/terminal-ui/src/pages/StrategiesPage';
-import BacktestingPage from './pages/BacktestingPage';
+// import BacktestingPage from './pages/BacktestingPage';
 import LogsPage from './pages/LogsPage';
 import PortfolioOverviewPage from './pages/PortfolioOverviewPage';
 import SettingsPage from './pages/SettingsPage';
@@ -103,8 +103,7 @@ export default function App() {
         return <AnalyticsPage />;
       case 'strategies':
         return <StrategiesPage />;
-      case 'backtesting':
-        return <BacktestingPage />;
+      // Backtesting removed per user request
       case 'logs':
         return <LogsPage />;
       case 'portfolio':
