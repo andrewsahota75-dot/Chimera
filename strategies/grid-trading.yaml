@@ -1,0 +1,7 @@
+# Grid Trading Strategy Configuration
+gridSpacing: 0.005  # 0.5% spacing between grid levels
+gridLevels: 10      # Total number of grid levels
+orderSize: 0.01     # Fixed order size (for crypto)
+basePrice: 43000    # Base price for grid center
+positionSize: null  # If not specified, will use orderSize or accountPercentage
+accountPercentage: 5.0  # Percentage of account to use for entire grid

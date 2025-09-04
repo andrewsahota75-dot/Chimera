@@ -1,0 +1,6 @@
+# Mean Reversion Strategy Configuration
+lookback: 20
+threshold: 2.0
+stopLoss: 1.5
+positionSize: 100  # If not specified, will use accountPercentage
+accountPercentage: 2.0  # Percentage of account to risk per trade

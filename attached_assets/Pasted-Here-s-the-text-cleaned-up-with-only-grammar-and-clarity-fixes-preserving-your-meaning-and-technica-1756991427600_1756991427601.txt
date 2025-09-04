@@ -1,0 +1,27 @@
+Here’s the text cleaned up with only grammar and clarity fixes, preserving your meaning and technical details:  
+
+***
+
+In the dashboard, where the active bots are shown, display all the bots at once instead of using a dropdown, since both are supposed to be running at the same time. Make it so that when all the strategies related to an asset (crypto/equity) are turned off, the status shows “stopped.” If there is an error and it is not working, it should also show “stopped.” Change their names from “Bots” to just “Equity” and “Crypto.”  
+
+The notifications are stuck at 3 even after clicking “Read all notifications.” Fix this issue.  
+
+Remove the Backtesting tab altogether, since it is not required. In the Strategies tab, remove the “Add New Strat” button.  
+
+Fix the parameters: when I click “Update,” I should be able to tweak the parameters.  
+
+Make the backend modular for strategies by having a single “strategies” folder, where each strategy is in a separate file. Each strategy should have its own `.yaml` file for parameters, and whatever parameters the strategy has should be shown in the terminal. In the strategies folder, each strategy file should be accompanied by its corresponding `.yaml` file for parameter tweaking.  
+
+Also, clarify the purpose of the API keys in the Account section (Trading Bot API, Portfolio Tracker, Legacy Analytics).  
+
+In the sidebar, at the bottom under System Status (online/offline), add a Kill Switch. The Kill Switch should exit all positions and turn off all strategies so that no new positions can be placed. Additionally, make the Kill Switch trigger automatically if the portfolio value falls by 10% in a single day.  
+
+In the Settings, remove the Display tab and Account tab. Only the API Key tab should remain.  
+
+Tweak the logic so that strategies can choose their own position sizing, but if a strategy doesn’t send a position size, a default trade should be placed (based on account size %).  
+
+In the Strategies tab, when clicking on a strategy, it should display that strategy’s individual performance and analytics. In the Analytics tab, add a section to view individual strategy performances as well.  
+
+***
+
+Do you want me to further **condense this into a structured dev-spec list (like bullet points for implementation)**, or do you prefer keeping it as a refined descriptive note?

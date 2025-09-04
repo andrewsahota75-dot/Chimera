@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Play, Pause, Settings, Plus, TrendingUp, BarChart3, Target, Zap } from 'lucide-react';
+import { Play, Pause, Settings, Plus, TrendingUp, BarChart3, Target, Zap, X } from 'lucide-react';
 
 interface Strategy {
     id: string;
@@ -124,8 +124,10 @@ const StrategiesPage: React.FC = () => {
 
     const [selectedStrategy, setSelectedStrategy] = useState<Strategy | null>(null);
     const [showCreateModal, setShowCreateModal] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<'all' | 'equity' | 'crypto'>('all');
     const [showParametersModal, setShowParametersModal] = useState(false);
+    const [showPerformanceModal, setShowPerformanceModal] = useState(false);
+    const [editableParameters, setEditableParameters] = useState<any>({});
+    const [selectedCategory, setSelectedCategory] = useState<'all' | 'equity' | 'crypto'>('all');
 
     const toggleStrategy = (id: string) => {
         setStrategies(prev => prev.map(strategy => 
@@ -353,8 +355,23 @@ const StrategiesPage: React.FC = () => {
                                                     }
                                                 </button>
                                                 <button
-                                                    onClick={() => setSelectedStrategy(strategy)}
+                                                    onClick={() => {
+                                                        setSelectedStrategy(strategy);
+                                                        setShowPerformanceModal(true);
+                                                    }}
                                                     className="p-2 bg-[#3bc9f4]/20 text-[#3bc9f4] rounded-lg hover:bg-[#3bc9f4]/30 transition-colors"
+                                                    title="View Performance"
+                                                >
+                                                    <TrendingUp className="w-4 h-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        setSelectedStrategy(strategy);
+                                                        setEditableParameters({ ...strategy.parameters });
+                                                        setShowParametersModal(true);
+                                                    }}
+                                                    className="p-2 bg-[#f39c12]/20 text-[#f39c12] rounded-lg hover:bg-[#f39c12]/30 transition-colors ml-2"
+                                                    title="Edit Parameters"
                                                 >
                                                     <Settings className="w-4 h-4" />
                                                 </button>
@@ -368,37 +385,156 @@ const StrategiesPage: React.FC = () => {
                 </div>
             </div>
 
-            {/* Strategy Details Modal */}
-            {selectedStrategy && (
+            {/* Strategy Performance Modal */}
+            {selectedStrategy && showPerformanceModal && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                    <div className="bg-[#1c1f26] p-6 rounded-lg border border-gray-700/50 max-w-md w-full mx-4">
-                        <h3 className="text-lg font-semibold text-white mb-4">{selectedStrategy.name} Parameters</h3>
-                        <div className="space-y-3">
-                            {Object.entries(selectedStrategy.parameters).map(([key, value]) => (
-                                <div key={key} className="flex justify-between">
-                                    <span className="text-gray-400 capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
-                                    <span className="text-white font-mono">{value}</span>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="flex justify-end space-x-3 mt-6">
-                            <button
-                                onClick={() => setSelectedStrategy(null)}
-                                className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-                            >
-                                Close
-                            </button>
+                    <div className="bg-[#0e1117] rounded-lg p-6 w-full max-w-4xl max-h-[80vh] overflow-y-auto border border-gray-700">
+                        <div className="flex items-center justify-between mb-6">
+                            <h2 className="text-xl font-bold text-white">{selectedStrategy.name} Performance</h2>
                             <button 
                                 onClick={() => {
-                                    // Here you would normally open a parameter editing interface
-                                    // For now, just close the modal
+                                    setShowPerformanceModal(false);
                                     setSelectedStrategy(null);
-                                    alert('Parameters updated successfully!');
                                 }}
-                                className="px-4 py-2 bg-[#3bc9f4] text-white rounded-lg hover:bg-[#3bc9f4]/80 transition-colors"
+                                className="text-gray-400 hover:text-white transition-colors"
                             >
-                                Update
+                                <X className="w-6 h-6" />
                             </button>
+                        </div>
+                        
+                        <div className="space-y-6">
+                            {/* Performance Summary */}
+                            <div className="grid grid-cols-4 gap-4">
+                                <div className="bg-[#1c1f26] rounded-lg p-4">
+                                    <div className="text-sm text-gray-400 mb-1">Total P&L</div>
+                                    <div className={`text-xl font-bold ${
+                                        selectedStrategy.pnl >= 0 ? 'text-[#2ecc71]' : 'text-[#e74c3c]'
+                                    }`}>
+                                        ₹{selectedStrategy.pnl.toFixed(2)}
+                                    </div>
+                                </div>
+                                <div className="bg-[#1c1f26] rounded-lg p-4">
+                                    <div className="text-sm text-gray-400 mb-1">Win Rate</div>
+                                    <div className="text-xl font-bold text-white">{selectedStrategy.winRate}%</div>
+                                </div>
+                                <div className="bg-[#1c1f26] rounded-lg p-4">
+                                    <div className="text-sm text-gray-400 mb-1">Total Trades</div>
+                                    <div className="text-xl font-bold text-white">{selectedStrategy.trades}</div>
+                                </div>
+                                <div className="bg-[#1c1f26] rounded-lg p-4">
+                                    <div className="text-sm text-gray-400 mb-1">Avg Return</div>
+                                    <div className="text-xl font-bold text-[#3bc9f4]">
+                                        ₹{(selectedStrategy.pnl / selectedStrategy.trades).toFixed(2)}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {/* Recent Trades */}
+                            <div>
+                                <h3 className="text-lg font-medium text-white mb-3">Recent Trades</h3>
+                                <div className="bg-[#1c1f26] rounded-lg overflow-hidden">
+                                    <table className="w-full">
+                                        <thead className="bg-[#0e1117]">
+                                            <tr>
+                                                <th className="px-4 py-3 text-left text-sm text-gray-400">Time</th>
+                                                <th className="px-4 py-3 text-left text-sm text-gray-400">Side</th>
+                                                <th className="px-4 py-3 text-left text-sm text-gray-400">Price</th>
+                                                <th className="px-4 py-3 text-left text-sm text-gray-400">Quantity</th>
+                                                <th className="px-4 py-3 text-left text-sm text-gray-400">P&L</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {[1,2,3,4,5].map((i) => (
+                                                <tr key={i} className="border-t border-gray-700">
+                                                    <td className="px-4 py-3 text-sm text-gray-300">{new Date(Date.now() - i * 3600000).toLocaleTimeString()}</td>
+                                                    <td className="px-4 py-3 text-sm">
+                                                        <span className={`px-2 py-1 rounded text-xs ${
+                                                            i % 2 === 0 ? 'bg-[#2ecc71]/20 text-[#2ecc71]' : 'bg-[#e74c3c]/20 text-[#e74c3c]'
+                                                        }`}>
+                                                            {i % 2 === 0 ? 'BUY' : 'SELL'}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-4 py-3 text-sm text-white">₹{(2450 + i * 10).toFixed(2)}</td>
+                                                    <td className="px-4 py-3 text-sm text-white">{100 - i * 5}</td>
+                                                    <td className={`px-4 py-3 text-sm font-medium ${
+                                                        (i % 3 === 0) ? 'text-[#e74c3c]' : 'text-[#2ecc71]'
+                                                    }`}>
+                                                        {(i % 3 === 0) ? '-' : '+'}₹{(Math.random() * 500).toFixed(2)}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+            
+            {/* Strategy Parameters Edit Modal */}
+            {selectedStrategy && showParametersModal && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                    <div className="bg-[#0e1117] rounded-lg p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto border border-gray-700">
+                        <div className="flex items-center justify-between mb-6">
+                            <h2 className="text-xl font-bold text-white">Edit {selectedStrategy.name} Parameters</h2>
+                            <button 
+                                onClick={() => {
+                                    setShowParametersModal(false);
+                                    setSelectedStrategy(null);
+                                }}
+                                className="text-gray-400 hover:text-white transition-colors"
+                            >
+                                <X className="w-6 h-6" />
+                            </button>
+                        </div>
+                        
+                        <div className="space-y-4">
+                            {Object.entries(editableParameters).map(([key, value]) => (
+                                <div key={key}>
+                                    <label className="block text-sm text-gray-400 mb-2 capitalize">
+                                        {key.replace(/([A-Z])/g, ' $1')}
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={value as number}
+                                        onChange={(e) => setEditableParameters(prev => ({
+                                            ...prev,
+                                            [key]: parseFloat(e.target.value) || 0
+                                        }))}
+                                        className="w-full bg-[#1c1f26] border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-[#3bc9f4] focus:outline-none"
+                                    />
+                                </div>
+                            ))}
+                            
+                            <div className="flex space-x-3 pt-4">
+                                <button 
+                                    onClick={() => {
+                                        // Update strategy parameters
+                                        setStrategies(prev => prev.map(s => 
+                                            s.id === selectedStrategy.id 
+                                                ? { ...s, parameters: editableParameters }
+                                                : s
+                                        ));
+                                        setShowParametersModal(false);
+                                        setSelectedStrategy(null);
+                                        // In real implementation, this would save to backend/YAML
+                                        alert('Parameters updated successfully!');
+                                    }}
+                                    className="px-4 py-2 bg-[#3bc9f4] text-white rounded-lg hover:bg-[#3bc9f4]/80 transition-colors"
+                                >
+                                    Save Parameters
+                                </button>
+                                <button 
+                                    onClick={() => {
+                                        setShowParametersModal(false);
+                                        setSelectedStrategy(null);
+                                    }}
+                                    className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

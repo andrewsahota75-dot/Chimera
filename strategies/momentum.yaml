@@ -1,0 +1,7 @@
+# Momentum Strategy Configuration
+period: 14
+rsiThreshold: 70
+stopLoss: 2.0
+takeProfit: 3.0
+positionSize: null  # If not specified, will use accountPercentage
+accountPercentage: 2.5  # Percentage of account to risk per trade
