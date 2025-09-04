@@ -116,3 +116,36 @@ export interface ChartData {
   close: number;
   volume: number;
 }
+
+export interface Tick {
+  symbol: string;
+  price: number;
+  timestamp: number;
+  volume?: number;
+}
+
+export enum OrderSide {
+  BUY = 'BUY',
+  SELL = 'SELL'
+}
+
+export enum OrderType {
+  MARKET = 'MARKET',
+  LIMIT = 'LIMIT',
+  BRACKET = 'BRACKET',
+  COVER = 'COVER'
+}
+
+export interface StatCard {
+  title: string;
+  value: string;
+  change: string;
+  changeType: 'positive' | 'negative' | 'neutral';
+  icon: any;
+  sparklineData: number[];
+}
+
+export interface TradingMode {
+  mode: 'test' | 'paper' | 'live';
+  description: string;
+}

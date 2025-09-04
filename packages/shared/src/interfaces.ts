@@ -1,5 +1,5 @@
 // This file should ideally live in the shared package, e.g., packages/shared/src/interfaces.ts
-import { Order, Position, Tick, OrderSide, OrderType } from '../../../types';
+import { Order, Position, Tick, OrderSide, OrderType } from '../../../types.js';
 import { PlaceOrderParams as PlaceOrderParamsType } from './zod-schemas';
 
 // Re-exporting the Zod-generated type for use in services
