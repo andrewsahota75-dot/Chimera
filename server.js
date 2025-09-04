@@ -12,7 +12,12 @@ const WS_PORT = parseInt(PORT) + 1;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5000', 'http://127.0.0.1:5000', 'https://*.replit.dev'],
+  origin: [
+    'http://localhost:5000', 
+    'http://127.0.0.1:5000', 
+    'https://*.replit.dev',
+    `https://${process.env.REPLIT_DEV_DOMAIN}`
+  ].filter(Boolean),
   credentials: true
 }));
 app.use(express.json());
@@ -234,7 +239,7 @@ wss.on('connection', (ws) => {
 });
 
 // Start server
-server.listen(PORT, '0.0.0.0', () => {
+server.listen(PORT, 'localhost', () => {
   console.log(`🚀 Chimera Trading Terminal API Server running on port ${PORT}`);
   console.log(`📈 Trading Mode: PAPER`);
   console.log(`🔌 WebSocket server running on port ${WS_PORT}`);
