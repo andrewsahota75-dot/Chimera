@@ -54,3 +54,64 @@ export const PlaceOrderParamsSchema = z.union([
 export type PlaceOrderParams = z.infer<typeof PlaceOrderParamsSchema>;
 export type BracketOrderParams = z.infer<typeof BracketOrderSchema>;
 export type CoverOrderParams = z.infer<typeof CoverOrderSchema>;
+
+// Authentication Schemas
+export const LoginSchema = z.object({
+  email: z.string().email('Invalid email format'),
+  password: z.string().min(6, 'Password must be at least 6 characters')
+});
+
+export const RegisterSchema = z.object({
+  email: z.string().email('Invalid email format'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+  name: z.string().optional()
+});
+
+// API Response Schemas
+export const ApiResponseSchema = z.object({
+  success: z.boolean(),
+  data: z.any().optional(),
+  error: z.object({
+    message: z.string(),
+    details: z.any().optional()
+  }).optional()
+});
+
+// Query Parameter Schemas
+export const PaginationSchema = z.object({
+  limit: z.string().optional().transform(val => val ? parseInt(val) : 50),
+  offset: z.string().optional().transform(val => val ? parseInt(val) : 0)
+});
+
+export const DateRangeSchema = z.object({
+  startDate: z.string().datetime().optional(),
+  endDate: z.string().datetime().optional()
+});
+
+// Trading Data Schemas
+export const PositionQuerySchema = z.object({
+  symbol: z.string().optional(),
+  botName: z.string().optional()
+}).merge(PaginationSchema);
+
+export const TradeQuerySchema = z.object({
+  symbol: z.string().optional(),
+  side: OrderSideSchema.optional(),
+  botName: z.string().optional()
+}).merge(PaginationSchema).merge(DateRangeSchema);
+
+export const OrderStatusSchema = z.enum(['PENDING', 'FILLED', 'CANCELLED', 'REJECTED', 'PARTIAL']);
+
+export const OrderUpdateSchema = z.object({
+  id: z.string(),
+  status: OrderStatusSchema.optional(),
+  filledQuantity: z.number().optional(),
+  avgPrice: z.number().optional()
+});
+
+export type LoginParams = z.infer<typeof LoginSchema>;
+export type RegisterParams = z.infer<typeof RegisterSchema>;
+export type ApiResponse = z.infer<typeof ApiResponseSchema>;
+export type PositionQuery = z.infer<typeof PositionQuerySchema>;
+export type TradeQuery = z.infer<typeof TradeQuerySchema>;
+export type OrderUpdate = z.infer<typeof OrderUpdateSchema>;
