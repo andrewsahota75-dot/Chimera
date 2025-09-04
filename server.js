@@ -3,6 +3,9 @@ const cors = require('cors');
 const { createServer } = require('http');
 const { WebSocketServer } = require('ws');
 
+// Initialize logging
+console.log('🚀 Starting Chimera Trading Terminal with enhanced logging...');
+
 const app = express();
 const PORT = process.env.API_PORT || 3001;
 const WS_PORT = parseInt(PORT) + 1;
