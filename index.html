@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chimera Trading Terminal</title>
+  <style>
+    :root {
+      --chimera-dark: #0e1117;
+      --chimera-lightdark: #1c1f26;
+      --chimera-grey: #21262d;
+      --chimera-lightgrey: #8b949e;
+      --chimera-blue: #3bc9f4;
+      --chimera-green: #2ecc71;
+      --chimera-red: #e74c3c;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      background-color: var(--chimera-dark);
+      color: white;
+    }
+
+    .bg-chimera-dark { background-color: var(--chimera-dark); }
+    .bg-chimera-lightdark { background-color: var(--chimera-lightdark); }
+    .bg-chimera-grey { background-color: var(--chimera-grey); }
+    .text-chimera-lightgrey { color: var(--chimera-lightgrey); }
+    .bg-chimera-blue { background-color: var(--chimera-blue); }
+    .bg-chimera-green { background-color: var(--chimera-green); }
+    .bg-chimera-red { background-color: var(--chimera-red); }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./index.tsx"></script>
+</body>
+</html>

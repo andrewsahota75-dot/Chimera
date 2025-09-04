@@ -1,0 +1,56 @@
+Here’s a **proofread and professionally formatted version** of your instructions—the suggestions are grouped for clarity and actionability:
+
+***
+
+**Chimera Trading Terminal: Requested Changes**
+
+1. **Bots Section**
+   - Display all bots and show their current status alongside their names.
+
+2. **Strategies & Diversification**
+   - Allow users to choose between broad strategy types (e.g., equities and crypto).
+   - Within each type, provide an option to select specific assets for strategies.
+   - Design the backend for **easy addition of new strategies**:
+     - The backend should automatically detect new strategy files.
+     - When a new strategy is added, all required parameters should be dynamically fetched and presented in the terminal.
+     - Enable users to tweak parameters directly from the terminal.
+     - Structure the system modularly to simplify strategy integration.
+
+3. **Backtesting**
+   - **Fix the backtesting page**: address the crash preventing it from opening and ensure stable functionality.
+
+4. **Dashboard/Terminal Restrictions**
+   - Remove the ability to place orders from the terminal/dashboard.
+   - Remove the display and handling of order books in the terminal/dashboard.
+
+5. **Currency Converter**
+   - Implement and ensure the currency converter works reliably.
+
+6. **Performance Tab**
+   - Add an option to view **daily performance** in addition to existing analytics.
+
+7. **API Keys & Settings**
+   - Centralize all API key management in the terminal’s settings section.
+   - Ensure every API key (currently 3–4; add all) can be edited/updated only within this settings menu.
+
+8. **Dashboard Layout**
+   - Remove the stock chart from the dashboard for a cleaner interface.
+
+9. **Live Time Display**
+   - Make the time display on the dashboard **live** and updating in real time.
+
+10. **Strategy Parameters Editor**
+    - Fix the "Update" button: clicking it should actually update the strategy parameters.
+
+***
+
+**General Goals:**
+- **Stability:** Eliminate crashes, especially around the backtesting page.
+- **Modularity & Flexibility:** Backend must be modular for adding new strategies and managing parameters without code changes or redeployments.
+- **Usability:** Streamline the user experience by minimizing manual navigation (centralized settings, dynamic parameter editing).
+- **UI/UX Consistency:** Remove elements that cause clutter or are unused (orders, order books, stock chart) and focus the interface on actionable data and controls.
+- **Reliability:** Ensure that all interactive UI buttons (like the "Update" button in strategy parameters and the live time display) function as intended.
+
+Let me know if you want this reworded as developer acceptance criteria or want actionable tickets/user stories for a project tracker.
+
+[1](https://replit.com/@AndrewSahota/Chimera2Replit)

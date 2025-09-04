@@ -1,0 +1,96 @@
+
+## 🔧 Key Improvements
+
+### **1. Sidebar Navigation**
+
+* **Current Issue:** Looks dated, flat icons, no hierarchy.
+* **Fixes:**
+
+  * Add **section grouping** (e.g., "Core" → Dashboard, Analytics; "Research" → Backtesting, Optimization; "Execution" → Strategies, Logs).
+  * Use **outlined modern icons** (Lucide or Feather), lighter by default, bright accent on hover.
+  * Add **collapse/expand toggle** for sidebar (slim mode with icons only).
+
+---
+
+### **2. Dashboard Header**
+
+* **Current Issue:** Large header text with little interaction.
+* **Fixes:**
+
+  * Replace big "Unified Command Terminal" with a **small subheader** and focus main space on **portfolio stats**.
+  * Move **Trading Mode & Active Bot** into a **compact status bar** (right-aligned, pill-style toggles, green/red indicators).
+  * Add **date/time + refresh button** for real-time feel.
+
+---
+
+### **3. Portfolio Stats**
+
+* **Current Issue:** Only two metrics, oversized text.
+* **Fixes:**
+
+  * Convert to **grid of four stat cards**:
+
+    1. Portfolio Value
+    2. Unrealized P\&L
+    3. Daily Change %
+    4. Cash Balance / Margin Used
+  * Use **mini sparklines** inside each card to show trends.
+  * Make P\&L **dynamic gradient color** (green → red depending on %).
+
+---
+
+### **4. Positions Table**
+
+* **Current Issue:** Bland table, static numbers.
+* **Fixes:**
+
+  * Add **small company logos** next to symbols.
+  * **Sortable columns** (click header to sort by P\&L, Price, etc.).
+  * **Mini inline chart** for each stock’s recent movement.
+  * Color-code rows subtly (green/red fade on profit/loss).
+  * Right-align all numbers with **consistent monospaced font**.
+
+---
+
+### **5. Event Log**
+
+* **Current Issue:** Just text, looks secondary.
+* **Fixes:**
+
+  * Turn into **scrollable card with filters** ("Show only BUY/SELL/ERROR").
+  * Add **icons** (⬆️ for sell, ⬇️ for buy).
+  * Highlight keywords: **BUY = green tag**, **SELL = red tag**, price in gray badge.
+  * Include **expandable details** (execution ID, latency, broker response).
+
+---
+
+### **6. Control Panel**
+
+* **Current Issue:** Plain form, no affordance.
+* **Fixes:**
+
+  * Place in a **collapsible drawer** on right side instead of bottom left.
+  * Add **live validation** (invalid symbols → red highlight).
+  * Prebuilt strategy dropdown with tooltips (MACross, RSI Divergence, etc.).
+  * Add **"Deploy Strategy" CTA button** with progress indicator.
+
+---
+
+### **7. Visual Polish**
+
+* **Typography:** Use **Inter or IBM Plex Sans** for headings, **Roboto Mono** for numbers/logs.
+* **Colors:** Dark gray background (#0e1117), elevated cards (#1c1f26), accent cyan (#3bc9f4), success green (#2ecc71), danger red (#e74c3c).
+* **Micro-interactions:**
+
+  * Hover → subtle lift & glow.
+  * P\&L counters animate on update.
+  * Logs auto-scroll with smooth fade-in.
+
+---
+
+### **8. Layout & Responsiveness**
+
+* **Desktop:** Sidebar + two-column main layout (left = stats + positions, right = logs + controls).
+* **Tablet/Mobile:** Sidebar collapses, stats in stacked cards, logs below positions.
+
+---

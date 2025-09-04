@@ -1,0 +1,5 @@
+{
+  "name": "Project Chimera - Trading Terminal",
+  "description": "A sophisticated, real-time trading terminal user interface built with React and Tailwind CSS. It provides a comprehensive dashboard for monitoring market data, managing orders, and tracking positions.",
+  "requestFramePermissions": []
+}

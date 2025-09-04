@@ -1,0 +1,52 @@
+PS E:\Chimera2Replit> npm run dev
+
+> chimera-trading-terminal@1.0.0 dev
+> vite --host 0.0.0.0 --port 5000
+
+
+  VITE v5.4.19  ready in 2011 ms
+
+  ➜  Local:   http://localhost:5000/
+  ➜  Network: http://192.168.42.169:5000/
+  ➜  press h + enter to show help
+Error:   Failed to scan for dependencies from entries:
+  E:/Chimera2Replit/index.html
+
+  ✘ [ERROR] No matching export in "apps/terminal-ui/src/pages/AnalyticsPage.tsx" for import "default"
+
+    App.tsx:18:7:
+      18 │ import AnalyticsPage from './apps/terminal-ui/src/pages/AnalyticsP...
+         ╵        ~~~~~~~~~~~~~
+
+
+✘ [ERROR] No matching export in "apps/terminal-ui/src/pages/StrategiesPage.tsx" for import "default"
+
+    App.tsx:19:7:
+      19 │ import StrategiesPage from './apps/terminal-ui/src/pages/Strategie...
+         ╵        ~~~~~~~~~~~~~~
+
+
+    at failureErrorWithLog (E:\Chimera2Replit\node_modules\esbuild\lib\main.js:1472:15)
+    at E:\Chimera2Replit\node_modules\esbuild\lib\main.js:945:25
+    at runOnEndCallbacks (E:\Chimera2Replit\node_modules\esbuild\lib\main.js:1315:45)
+    at buildResponseToResult (E:\Chimera2Replit\node_modules\esbuild\lib\main.js:943:7)
+    at E:\Chimera2Replit\node_modules\esbuild\lib\main.js:955:9
+    at new Promise (<anonymous>)
+    at requestCallbacks.on-end (E:\Chimera2Replit\node_modules\esbuild\lib\main.js:954:54)
+    at handleRequest (E:\Chimera2Replit\node_modules\esbuild\lib\main.js:647:17)
+    at handleIncomingPacket (E:\Chimera2Replit\node_modules\esbuild\lib\main.js:672:7)
+    at Socket.readFromStdout (E:\Chimera2Replit\node_modules\esbuild\lib\main.js:600:7)
+12:50:23 PM [vite] Internal server error: [postcss] ENOSPC: no space left on device, write
+  Plugin: vite:css
+  File: E:/Chimera2Replit/index.html?html-proxy&direct&index=0.css:undefined:NaN
+      at writeFileSync (node:fs:2425:20)
+      at opts.transform.Object.assign.Object.assign.Object.assign.legacy (E:\Chimera2Replit\node_modules\jiti\dist\jiti.js:1:247364)
+      at transform (E:\Chimera2Replit\node_modules\jiti\dist\jiti.js:1:247408)
+      at evalModule (E:\Chimera2Replit\node_modules\jiti\dist\jiti.js:1:250828)
+      at jiti (E:\Chimera2Replit\node_modules\jiti\dist\jiti.js:1:249841)
+      at E:\Chimera2Replit\node_modules\tailwindcss\lib\lib\load-config.js:52:26
+      at loadConfig (E:\Chimera2Replit\node_modules\tailwindcss\lib\lib\load-config.js:62:6)
+      at getTailwindConfig (E:\Chimera2Replit\node_modules\tailwindcss\lib\lib\setupTrackingContext.js:71:116)
+      at E:\Chimera2Replit\node_modules\tailwindcss\lib\lib\setupTrackingContext.js:100:92
+      at E:\Chimera2Replit\node_modules\tailwindcss\lib\processTailwindFeatures.js:46:11
+12:50:32 PM [vite] Pre-transform error: [postcss] ENOSPC: no space left on device, write

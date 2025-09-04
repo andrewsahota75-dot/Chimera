@@ -1,0 +1,101 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Position {
+  id            String   @id @default(cuid())
+  symbol        String
+  quantity      Int
+  avgPrice      Float
+  currentPrice  Float
+  pnl           Float
+  dayChange     Float
+  dayChangePercent Float
+  botName       String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([symbol, botName])
+}
+
+model Trade {
+  id          String    @id @default(cuid())
+  symbol      String
+  side        String    // BUY or SELL
+  quantity    Int
+  price       Float
+  pnl         Float
+  botName     String
+  orderId     String?
+  timestamp   DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+}
+
+model Order {
+  id          String   @id @default(cuid())
+  symbol      String
+  side        String   // BUY or SELL
+  quantity    Int
+  price       Float
+  status      String   // PENDING, FILLED, CANCELLED, REJECTED
+  botName     String?
+  brokerOrderId String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model StrategyConfiguration {
+  id          String   @id @default(cuid())
+  name        String
+  symbol      String
+  parameters  Json
+  isActive    Boolean  @default(false)
+  botName     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  backtestResult BacktestResult?
+}
+
+model BacktestResult {
+  id                    String   @id @default(cuid())
+  strategyConfigId      String   @unique
+  strategyConfig        StrategyConfiguration @relation(fields: [strategyConfigId], references: [id])
+  totalReturn           Float
+  sharpeRatio           Float
+  maxDrawdown           Float
+  winRate               Float
+  totalTrades           Int
+  equityCurve           Json
+  createdAt             DateTime @default(now())
+}
+
+model Heartbeat {
+  id          String   @id @default(cuid())
+  service     String   @unique
+  timestamp   DateTime @default(now())
+  status      String
+  metadata    Json?
+}
+
+model AlertLog {
+  id          String   @id @default(cuid())
+  message     String
+  level       String   // INFO, WARN, ERROR, CRITICAL
+  service     String
+  timestamp   DateTime @default(now())
+}
