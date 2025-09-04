@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, Line, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, DollarSign, Target, Activity, BarChart3, PieChart as PieChartIcon } from 'lucide-react';
-import DailyPerformanceView from '../../../components/DailyPerformanceView';
+// import DailyPerformanceView from '../../../components/DailyPerformanceView';
 
 const AnalyticsPage: React.FC = () => {
     const [selectedTimeframe, setSelectedTimeframe] = useState('1D');
@@ -149,7 +149,12 @@ const AnalyticsPage: React.FC = () => {
                 </div>
             )}
 
-            {activeTab === 'daily' && <DailyPerformanceView />}
+            {activeTab === 'daily' && (
+                <div className="bg-[#1c1f26] p-6 rounded-lg border border-gray-700/50">
+                    <h2 className="text-lg font-semibold text-white mb-4">Daily Performance View</h2>
+                    <p className="text-gray-400">Daily performance chart will be displayed here.</p>
+                </div>
+            )}
 
             {activeTab === 'allocation' && (
                 <div className="bg-[#1c1f26] p-6 rounded-lg border border-gray-700/50">
